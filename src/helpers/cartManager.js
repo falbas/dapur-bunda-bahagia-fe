@@ -25,3 +25,16 @@ export const displayCart = () => {
 export const clearCart = () => {
   removeCookies('cart')
 }
+
+export const deleteItem = (id) => {
+  const cartCookie = getCookies('cart')
+  const cart = cartCookie ? JSON.parse(cartCookie) : []
+
+  const existingItem = cart.findIndex((c) => c.id === id)
+
+  if (existingItem !== -1) {
+    cart.splice(existingItem, 1)
+  }
+
+  setCookies('cart', JSON.stringify(cart))
+}

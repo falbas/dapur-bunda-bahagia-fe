@@ -1,7 +1,12 @@
 'use client'
 
 import { currencyFormat } from '@/helpers/utils'
-import { displayCart, addToCart, clearCart } from '@/helpers/cartManager'
+import {
+  displayCart,
+  addToCart,
+  clearCart,
+  deleteItem,
+} from '@/helpers/cartManager'
 import { useState, useEffect } from 'react'
 import { NumberInput } from '@mantine/core'
 import { Button, Modal, TextInput } from '@mantine/core'
@@ -10,6 +15,7 @@ import { fetcher } from '@/helpers/fetcher'
 import { useForm, isNotEmpty } from '@mantine/form'
 import Link from 'next/link'
 import { setSession, getSession } from '@/helpers/sessionManager'
+import { FaRegTrashAlt } from 'react-icons/fa'
 
 export default function Page() {
   const [openedOrder, { open: openOrder, close: closeOrder }] =
@@ -31,6 +37,11 @@ export default function Page() {
   useEffect(() => {
     setCart(displayCart())
   }, [])
+
+  const handleDeleteItem = (id) => {
+    deleteItem(id)
+    setCart(displayCart())
+  }
 
   const handleOrderNow = async () => {
     form.validate()
@@ -61,7 +72,9 @@ export default function Page() {
         {!cart.length ? (
           <p className="text-center">Keranjang Kosong</p>
         ) : (
-          cart?.map((item, key) => <CartItem key={key} item={item} />)
+          cart?.map((item, key) => (
+            <CartItem key={key} item={item} deleteHandler={handleDeleteItem} />
+          ))
         )}
       </div>
       <div className="fixed w-full max-w-md bottom-16 z-10 bg-white">
@@ -112,22 +125,24 @@ export default function Page() {
             Pesan Sekarang
           </Button>
         </Modal>
-        <Button
-          onClick={openOrder}
-          variant="outline"
-          color="teal"
-          radius="xl"
-          fullWidth
-          className="mt-2"
-        >
-          Pesan
-        </Button>
+        {cart.length > 0 && (
+          <Button
+            onClick={openOrder}
+            variant="outline"
+            color="teal"
+            radius="xl"
+            fullWidth
+            className="mt-2"
+          >
+            Pesan
+          </Button>
+        )}
       </div>
     </>
   )
 }
 
-function CartItem({ item }) {
+function CartItem({ item, deleteHandler }) {
   const [value, setValue] = useState(item.count)
 
   useEffect(() => {
@@ -160,6 +175,11 @@ function CartItem({ item }) {
           max={100}
           hideControls
         />
+      </div>
+      <div className="my-auto w-8">
+        <button onClick={() => deleteHandler(item.id)} className="w-8 h-8 flex">
+          <FaRegTrashAlt className="w-full h-full m-auto fill-red-500" />
+        </button>
       </div>
     </div>
   )
