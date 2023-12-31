@@ -54,6 +54,9 @@ export default function Page() {
 
   return (
     <>
+      <div className="flex relative h-8 mb-2">
+        <h1 className="m-auto font-bold text-xl">Keranjang</h1>
+      </div>
       <div className="grid grid-cols-1 gap-2 pb-12">
         {!cart.length ? (
           <p className="text-center">Keranjang Kosong</p>
