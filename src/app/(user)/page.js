@@ -6,7 +6,7 @@ import { currencyFormat } from '@/helpers/utils'
 import { Button } from '@mantine/core'
 import { addToCart } from '@/helpers/cartManager'
 
-export default function Home() {
+export default function Page() {
   const { data, isLoading, error } = useSWR('/products', fetcherSWR)
 
   const handleAddToCart = (item) => {

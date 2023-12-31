@@ -1,7 +1,7 @@
-import Cookies from 'js-cookie'
+import { setCookies, getCookies, removeCookies } from './cookiesManager'
 
 export const addToCart = (item) => {
-  const cartCookie = Cookies.get('cart')
+  const cartCookie = getCookies('cart')
   const cart = cartCookie ? JSON.parse(cartCookie) : []
 
   const existingItem = cart.findIndex((c) => c.id === item.id)
@@ -12,12 +12,16 @@ export const addToCart = (item) => {
     cart.push(item)
   }
 
-  Cookies.set('cart', JSON.stringify(cart))
+  setCookies('cart', JSON.stringify(cart))
 }
 
 export const displayCart = () => {
-  const cartCookie = Cookies.get('cart')
+  const cartCookie = getCookies('cart')
   const cart = cartCookie ? JSON.parse(cartCookie) : []
 
   return cart
+}
+
+export const clearCart = () => {
+  removeCookies('cart')
 }
