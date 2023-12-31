@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <>
-      <h1 className="w-full">admin</h1>
+      <h1>asda</h1>
     </>
   )
 }
