@@ -12,15 +12,19 @@ import classes from './NavbarNested.module.css'
 import { clearToken } from '@/helpers/tokenManager'
 
 const mockdata = [
-  { label: 'Dashboard', icon: IconGauge },
+  {
+    label: 'Dashboard',
+    icon: IconGauge,
+    initiallyOpened: true,
+    links: [{ label: 'Dashboard', link: '/admin' }],
+  },
   {
     label: 'Transaksi',
     icon: IconClipboardList,
     initiallyOpened: true,
     links: [
-      { label: 'Daftar Transaksi', link: '/' },
-      { label: 'Riwayat Transaksi', link: '/' },
-      { label: 'Laporan', link: '/' },
+      { label: 'Daftar Transaksi', link: '/admin/daftar-transaksi' },
+      { label: 'Laporan', link: '/admin/laporan' },
     ],
   },
   {
@@ -28,8 +32,8 @@ const mockdata = [
     icon: IconToolsKitchen,
     initiallyOpened: true,
     links: [
-      { label: 'Daftar Produk', link: '/' },
-      { label: 'Tambah Produk', link: '/' },
+      { label: 'Daftar Produk', link: '/admin/daftar-produk' },
+      { label: 'Tambah Produk', link: '/admin/tambah-produk' },
     ],
   },
 ]
@@ -47,7 +51,7 @@ export function NavbarNested() {
   return (
     <nav className={classes.navbar}>
       <div className={classes.header}>
-        <h1 className='text-center font-bold text-xl'>Dapur Bunda Bahagia</h1>
+        <h1 className="text-center font-bold text-xl">Dapur Bunda Bahagia</h1>
       </div>
 
       <ScrollArea className={classes.links}>

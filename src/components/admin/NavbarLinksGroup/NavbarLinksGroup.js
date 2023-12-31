@@ -4,26 +4,20 @@ import {
   Box,
   Collapse,
   ThemeIcon,
-  Text,
   UnstyledButton,
   rem,
 } from '@mantine/core'
-import { IconCalendarStats, IconChevronRight } from '@tabler/icons-react'
+import { IconChevronRight } from '@tabler/icons-react'
 import classes from './NavbarLinksGroup.module.css'
+import Link from 'next/link'
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
   const hasLinks = Array.isArray(links)
   const [opened, setOpened] = useState(initiallyOpened || false)
   const items = (hasLinks ? links : []).map((link) => (
-    <Text
-      component="a"
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-      onClick={(event) => event.preventDefault()}
-    >
+    <Link key={link.label} href={link.link} className={classes.link}>
       {link.label}
-    </Text>
+    </Link>
   ))
 
   return (
