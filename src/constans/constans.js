@@ -8,8 +8,8 @@ export const STATUS_KEY = {
 export const BUTTON_STATUS_KEY = {
   0: 'Konfirmasi Pesanan',
   1: 'Konfirmasi Pembayaran',
-  2: 'Pesanan Siap',
-  3: 'Selesaikan Transaksi',
+  2: 'Selesaikan Transaksi',
+  3: 'Pesanan Selesai',
 }
 
 export const COLOR_STATUS_KEY = {

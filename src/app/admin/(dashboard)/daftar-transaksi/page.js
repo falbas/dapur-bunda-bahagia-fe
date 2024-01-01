@@ -10,6 +10,7 @@ import {
   COLOR_STATUS_KEY,
 } from '@/constans/constans'
 import { useState, createContext, useContext, useEffect } from 'react'
+import Link from 'next/link'
 
 const TransactionContext = createContext()
 
@@ -61,7 +62,11 @@ function ActiveTransaction() {
   const rows =
     data?.data.map((item, key) => (
       <Table.Tr key={key}>
-        <Table.Td>{dateFormat(item.updated_at)}</Table.Td>
+        <Table.Td>
+          <Link href={`/admin/daftar-transaksi/${item.id}`}>
+            {dateFormat(item.updated_at)}
+          </Link>
+        </Table.Td>
         <Table.Td>{item.customer}</Table.Td>
         <Table.Td>{currencyFormat(item.total)}</Table.Td>
         <Table.Td>
@@ -89,11 +94,11 @@ function ActiveTransaction() {
         <Table highlightOnHover>
           <Table.Thead>
             <Table.Tr>
-              <Table.Th className="w-2/12">Waktu</Table.Th>
-              <Table.Th className="w-3/12">Customer</Table.Th>
-              <Table.Th className="w-3/12">Total</Table.Th>
-              <Table.Th className="w-2/12">Status</Table.Th>
-              <Table.Th className="w-2/12">Aksi</Table.Th>
+              <Table.Th className="w-1/5">Waktu</Table.Th>
+              <Table.Th className="w-1/5">Customer</Table.Th>
+              <Table.Th className="w-1/5">Total</Table.Th>
+              <Table.Th className="w-1/5">Status</Table.Th>
+              <Table.Th className="w-1/5">Aksi</Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{rows}</Table.Tbody>
@@ -117,7 +122,11 @@ function CompletedTransaction() {
   const rows =
     data?.data.map((item, key) => (
       <Table.Tr key={key}>
-        <Table.Td>{dateFormat(item.updated_at)}</Table.Td>
+        <Table.Td>
+          <Link href={`/admin/daftar-transaksi/${item.id}`}>
+            {dateFormat(item.updated_at)}
+          </Link>
+        </Table.Td>
         <Table.Td>{item.customer}</Table.Td>
         <Table.Td>{currencyFormat(item.total)}</Table.Td>
         <Table.Td>
