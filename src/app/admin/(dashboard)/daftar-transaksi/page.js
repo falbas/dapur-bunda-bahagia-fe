@@ -78,7 +78,7 @@ function ActiveTransaction() {
 
   return (
     <div className="mt-4">
-      <h1 className="font-bold text-lg mb-2">Transaksi Aktif</h1>
+      <h1 className="font-bold mb-2">Transaksi Aktif</h1>
       {isLoading ? (
         'Loading...'
       ) : error ? (
@@ -128,7 +128,7 @@ function CompletedTransaction() {
 
   return (
     <div className="mt-4">
-      <h1 className="font-bold text-lg mb-2">Transaksi Selesai</h1>
+      <h1 className="font-bold mb-2">Transaksi Selesai</h1>
       {isLoading ? (
         'Loading...'
       ) : error ? (

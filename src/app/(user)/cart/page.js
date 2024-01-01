@@ -77,55 +77,55 @@ export default function Page() {
           ))
         )}
       </div>
-      <div className="fixed w-full max-w-md bottom-16 z-10 bg-white">
-        <Modal
-          opened={openedSuccess}
-          onClose={closeSuccess}
-          title="Order Sukses"
-          centered
-        >
-          <p>
-            Atas Nama: <b>{form.values.customer}</b>
-          </p>
-          <p>
-            Order berhasil dibuat, segera ke kasir untuk melakukan konfirmasi
-            order dan pembayaran
-          </p>
-          <Link href="/order">
-            <Button
-              variant="outline"
-              color="teal"
-              radius="xl"
-              fullWidth
-              className="mt-2"
-            >
-              Cek Pesanan
-            </Button>
-          </Link>
-        </Modal>
-        <Modal
-          opened={openedOrder}
-          onClose={closeOrder}
-          title="Pesan Sekarang"
-          centered
-        >
-          <TextInput
-            label="Nama"
-            placeholder="Masukkan nama"
-            {...form.getInputProps('customer')}
-          />
+      <Modal
+        opened={openedSuccess}
+        onClose={closeSuccess}
+        title="Order Sukses"
+        centered
+      >
+        <p>
+          Atas Nama: <b>{form.values.customer}</b>
+        </p>
+        <p>
+          Order berhasil dibuat, segera ke kasir untuk melakukan konfirmasi
+          order dan pembayaran
+        </p>
+        <Link href="/order">
           <Button
-            onClick={handleOrderNow}
             variant="outline"
             color="teal"
             radius="xl"
             fullWidth
-            className="my-2"
+            className="mt-2"
           >
-            Pesan Sekarang
+            Cek Pesanan
           </Button>
-        </Modal>
-        {cart.length > 0 && (
+        </Link>
+      </Modal>
+      <Modal
+        opened={openedOrder}
+        onClose={closeOrder}
+        title="Pesan Sekarang"
+        centered
+      >
+        <TextInput
+          label="Nama"
+          placeholder="Masukkan nama"
+          {...form.getInputProps('customer')}
+        />
+        <Button
+          onClick={handleOrderNow}
+          variant="outline"
+          color="teal"
+          radius="xl"
+          fullWidth
+          className="my-2"
+        >
+          Pesan Sekarang
+        </Button>
+      </Modal>
+      {cart.length > 0 && (
+        <div className="fixed -ml-4 px-4 w-full max-w-md bottom-16 z-10 bg-white">
           <Button
             onClick={openOrder}
             variant="outline"
@@ -136,8 +136,8 @@ export default function Page() {
           >
             Pesan
           </Button>
-        )}
-      </div>
+        </div>
+      )}
     </>
   )
 }

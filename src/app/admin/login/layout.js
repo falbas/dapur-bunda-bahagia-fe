@@ -3,7 +3,7 @@
 import { fetcher } from '@/helpers/fetcher'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { getToken } from '@/helpers/tokenManager'
+import { getToken, clearToken } from '@/helpers/tokenManager'
 
 export default function LoginLayout({ children }) {
   const router = useRouter()
@@ -20,7 +20,8 @@ export default function LoginLayout({ children }) {
         await fetcher.get('/verify')
         router.push('/admin')
       } catch (err) {
-        setIsLoading(false)
+        clearToken()
+        location.reload()
       }
     }
     reqAuth()

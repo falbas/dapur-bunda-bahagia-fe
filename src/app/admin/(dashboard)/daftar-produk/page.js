@@ -51,7 +51,7 @@ export default function Page() {
           <Table.Thead>
             <Table.Tr>
               <Table.Th className="w-2/12">Foto</Table.Th>
-              <Table.Th className="w-2/12">Nama</Table.Th>
+              <Table.Th className="w-2/12">Produk</Table.Th>
               <Table.Th className="w-2/12">Kategori</Table.Th>
               <Table.Th className="w-2/12">Harga</Table.Th>
               <Table.Th className="w-2/12">Status</Table.Th>
