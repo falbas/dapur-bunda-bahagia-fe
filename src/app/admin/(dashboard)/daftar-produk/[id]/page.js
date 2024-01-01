@@ -14,28 +14,38 @@ import useSWR from 'swr'
 import { fetcher, fetcherSWR } from '@/helpers/fetcher'
 import { useRouter } from 'next/navigation'
 import { Notification } from '@/components/Notification'
+import { useEffect } from 'react'
 
-export default function Page() {
+export default function Page({ params }) {
   const router = useRouter()
   const { data } = useSWR('/categories', fetcherSWR)
+  const { data: dataProduct } = useSWR(`/products/${params.id}`, fetcherSWR)
 
   const form = useForm({
     initialValues: {
       name: '',
       image: null,
       price: '',
-      category_id: '',
+      category_id: 1,
       status: '',
     },
 
     validate: {
       name: isNotEmpty('Nama tidak boleh kosong'),
-      image: isNotEmpty('Gamabar tidak boleh kosong'),
       price: isNotEmpty('Harga tidak boleh kosong'),
       category_id: isNotEmpty('Kategori tidak boleh kosong'),
       status: isNotEmpty('Status tidak boleh kosong'),
     },
   })
+
+  useEffect(() => {
+    form.setValues({
+      name: dataProduct?.data.name || '',
+      price: dataProduct?.data.price || '',
+      category_id: String(dataProduct?.data.category_id) || '',
+      status: String(dataProduct?.data.status) || '',
+    })
+  }, [dataProduct])
 
   const handleSubmit = async () => {
     form.validate()
@@ -46,16 +56,33 @@ export default function Page() {
       for (const [key, value] of Object.entries(form.values)) {
         formData.append(key, value)
       }
-      await fetcher.post('/products', formData)
+      await fetcher.patch(`/products/${params.id}`, formData)
       Notification({
         type: 'success',
-        title: 'Produk berhasil ditambahkan',
+        title: 'Produk berhasil diubah',
       })
       router.push('/admin/daftar-produk')
     } catch (err) {
       Notification({
         type: 'error',
-        title: 'Produk gagal tidambahkan',
+        title: 'Produk gagal diubah',
+        message: err.response.data.message,
+      })
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      await fetcher.delete(`/products/${params.id}`)
+      Notification({
+        type: 'success',
+        title: 'Produk berhasil dihapus',
+      })
+      router.push('/admin/daftar-produk')
+    } catch (err) {
+      Notification({
+        type: 'error',
+        title: 'Produk gagal dihapus',
         message: err.response.data.message,
       })
     }
@@ -63,12 +90,15 @@ export default function Page() {
 
   return (
     <>
-      <h1 className="font-bold text-xl pb-4 border-b">Tambah Produk</h1>
+      <h1 className="font-bold text-xl pb-4 border-b">Ubah Produk</h1>
       <form
         encType="multipart/form-data"
         onSubmit={form.onSubmit(handleSubmit)}
         className="max-w-lg flex flex-col gap-4 mt-4"
       >
+        <Button onClick={handleDelete} variant="outline" color="red">
+          Hapus Produk
+        </Button>
         <TextInput
           label="Nama Produk"
           placeholder="Masukkan nama produk"
@@ -81,10 +111,17 @@ export default function Page() {
           withAsterisk
           {...form.getInputProps('image')}
         />
-        {form.values.image !== null && (
+        {form.values.image !== null ? (
           <div className="w-40 h-36">
             <img
               src={URL.createObjectURL(form.values.image)}
+              className="w-full h-full object-cover rounded-xl"
+            />
+          </div>
+        ) : (
+          <div className="w-40 h-36">
+            <img
+              src={dataProduct?.data.image_url || ''}
               className="w-full h-full object-cover rounded-xl"
             />
           </div>

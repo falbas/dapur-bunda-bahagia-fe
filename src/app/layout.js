@@ -1,7 +1,9 @@
 import { Poppins } from 'next/font/google'
 import './globals.css'
 import '@mantine/core/styles.css'
+import '@mantine/notifications/styles.css'
 import { MantineProvider } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
 
 const poppins = Poppins({ weight: '400', subsets: ['latin'] })
 
@@ -14,7 +16,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider>
+          <Notifications />
+          {children}
+        </MantineProvider>
       </body>
     </html>
   )

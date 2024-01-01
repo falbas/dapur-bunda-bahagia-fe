@@ -18,3 +18,13 @@ export const COLOR_STATUS_KEY = {
   2: 'orange',
   3: 'green',
 }
+
+export const PRODUCT_STATUS_KEY = {
+  0: 'Tidak Tersedia',
+  1: 'Tersedia',
+}
+
+export const PRODUCT_COLOR_STATUS_KEY = {
+  0: 'red',
+  1: 'green',
+}
