@@ -1,13 +1,41 @@
 'use client'
 
-import { Table, Button } from '@mantine/core'
+import { Table } from '@mantine/core'
 import useSWR from 'swr'
 import { fetcherSWR } from '@/helpers/fetcher'
-import { dateFormat, currencyFormat } from '@/helpers/utils'
+import { currencyFormat } from '@/helpers/utils'
 import { StatsGrid } from '@/components/admin/StatsGrid/StatsGrid'
+import { IconReceipt2, IconCoin, IconShoppingCart } from '@tabler/icons-react'
+import { useState, useEffect } from 'react'
 
 export default function Page() {
   const { data, isLoading, error } = useSWR('/transactions/report', fetcherSWR)
+  const [reports, setReports] = useState([])
+
+  useEffect(() => {
+    if (data) {
+      setReports([
+        {
+          title: 'Jumlah Transaksi',
+          icon: IconReceipt2,
+          value: data.data.transaction_count,
+          color: 'red',
+        },
+        {
+          title: 'Total Transaksi',
+          icon: IconCoin,
+          value: currencyFormat(data.data.transaction_total),
+          color: 'green',
+        },
+        {
+          title: 'Produk Terjual',
+          icon: IconShoppingCart,
+          value: data.data.product_sold,
+          color: 'blue',
+        },
+      ])
+    }
+  }, [data])
 
   const rows =
     data?.data.products.map((item, key) => (
@@ -15,15 +43,15 @@ export default function Page() {
         <Table.Td>
           <div className="w-24 h-20 mb-2">
             <img
-              src={item.product_image_url}
+              src={item.image_url}
               className="w-full h-full object-cover rounded-xl"
             />
           </div>
         </Table.Td>
-        <Table.Td>{item.product_name}</Table.Td>
-        <Table.Td>{currencyFormat(item.product_price)}</Table.Td>
-        <Table.Td>{item.order_count}</Table.Td>
-        <Table.Td>{currencyFormat(item.total)}</Table.Td>
+        <Table.Td>{item.name}</Table.Td>
+        <Table.Td>{currencyFormat(item.price)}</Table.Td>
+        <Table.Td>{item.order_count || 0}</Table.Td>
+        <Table.Td>{currencyFormat(item.price * item.order_count)}</Table.Td>
       </Table.Tr>
     )) ?? []
 
@@ -38,13 +66,7 @@ export default function Page() {
         'Tidak ada data'
       ) : (
         <div>
-          <StatsGrid
-            reportData={{
-              transaction_count: data?.data.transaction_count,
-              transaction_total: data?.data.transaction_total,
-              product_sold: data?.data.product_sold,
-            }}
-          />
+          <StatsGrid data={reports} />
           <h2 className="font-bold mt-4">Laporan Produk</h2>
           <Table highlightOnHover>
             <Table.Thead>

@@ -1,38 +1,9 @@
 import { Group, Paper, SimpleGrid, Text } from '@mantine/core'
-import { IconReceipt2, IconCoin, IconShoppingCart } from '@tabler/icons-react'
 import classes from './StatsGrid.module.css'
-import { currencyFormat } from '@/helpers/utils'
 
-const icons = {
-  receipt: IconReceipt2,
-  coin: IconCoin,
-  cart: IconShoppingCart,
-}
-
-export function StatsGrid({ reportData }) {
-  const data = [
-    {
-      title: 'Jumlah Transaksi',
-      icon: 'receipt',
-      value: reportData.transaction_count,
-      color: 'red',
-    },
-    {
-      title: 'Total Transaksi',
-      icon: 'coin',
-      value: currencyFormat(reportData.transaction_total),
-      color: 'green',
-    },
-    {
-      title: 'Produk Terjual',
-      icon: 'cart',
-      value: reportData.product_sold,
-      color: 'blue',
-    },
-  ]
-
+export function StatsGrid({ data }) {
   const stats = data.map((stat) => {
-    const Icon = icons[stat.icon]
+    const Icon = stat.icon
 
     return (
       <Paper
@@ -40,7 +11,9 @@ export function StatsGrid({ reportData }) {
         p="md"
         radius="md"
         key={stat.title}
-        style={{ borderColor: `var(--mantine-color-${stat.color}-5)` }}
+        style={
+          stat.color && { borderColor: `var(--mantine-color-${stat.color}-5)` }
+        }
       >
         <Group justify="space-between">
           <Text size="xs" c="dimmed" className={classes.title}>
