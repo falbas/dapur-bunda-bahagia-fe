@@ -38,3 +38,28 @@ export const deleteItem = (id) => {
 
   setCookies('cart', JSON.stringify(cart))
 }
+
+export const getTotalCart = () => {
+  const cartCookie = getCookies('cart')
+  const cart = cartCookie ? JSON.parse(cartCookie) : []
+
+  let total = 0
+  cart.map((item) => {
+    total += item.price * item.count
+  })
+
+  return total
+}
+
+export const checkCartItem = (id) => {
+  const cartCookie = getCookies('cart')
+  const cart = cartCookie ? JSON.parse(cartCookie) : []
+
+  const existingItem = cart.findIndex((c) => c.id === id)
+
+  if (existingItem !== -1) {
+    return true
+  } else {
+    return false
+  }
+}

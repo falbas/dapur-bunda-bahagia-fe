@@ -181,6 +181,7 @@ function StatusBadge({ status }) {
     <>
       <Box
         bg={COLOR_STATUS_KEY[status]}
+        px="xs"
         style={{
           borderRadius: '0.25rem',
           color: 'white',

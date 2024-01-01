@@ -6,6 +6,7 @@ import {
   addToCart,
   clearCart,
   deleteItem,
+  getTotalCart,
 } from '@/helpers/cartManager'
 import { useState, useEffect } from 'react'
 import { NumberInput } from '@mantine/core'
@@ -23,6 +24,7 @@ export default function Page() {
   const [openedSuccess, { open: openSuccess, close: closeSuccess }] =
     useDisclosure(false)
   const [cart, setCart] = useState([])
+  const [cartTotal, setCartTotal] = useState(getTotalCart())
 
   const form = useForm({
     initialValues: {
@@ -68,12 +70,17 @@ export default function Page() {
       <div className="flex relative h-8 mb-2">
         <h1 className="m-auto font-bold text-xl">Keranjang</h1>
       </div>
-      <div className="grid grid-cols-1 gap-2 pb-12">
+      <div className="grid grid-cols-1 gap-2 pb-14">
         {!cart.length ? (
           <p className="text-center">Keranjang Kosong</p>
         ) : (
           cart?.map((item, key) => (
-            <CartItem key={key} item={item} deleteHandler={handleDeleteItem} />
+            <CartItem
+              key={key}
+              item={item}
+              setCartTotal={setCartTotal}
+              deleteHandler={handleDeleteItem}
+            />
           ))
         )}
       </div>
@@ -113,6 +120,9 @@ export default function Page() {
           placeholder="Masukkan nama"
           {...form.getInputProps('customer')}
         />
+        <p className="mt-2">
+          Total: <b>{currencyFormat(cartTotal)}</b>
+        </p>
         <Button
           onClick={handleOrderNow}
           variant="outline"
@@ -126,6 +136,9 @@ export default function Page() {
       </Modal>
       {cart.length > 0 && (
         <div className="fixed -ml-4 px-4 w-full max-w-md bottom-16 z-10 bg-white">
+          <p className="text-right">
+            Total: <b>{currencyFormat(cartTotal)}</b>
+          </p>
           <Button
             onClick={openOrder}
             variant="outline"
@@ -142,18 +155,20 @@ export default function Page() {
   )
 }
 
-function CartItem({ item, deleteHandler }) {
+function CartItem({ item, setCartTotal, deleteHandler }) {
   const [value, setValue] = useState(item.count)
 
-  useEffect(() => {
+  const handleOnChange = (e) => {
+    setValue(e)
     addToCart({
       id: item.id,
       name: item.name,
       price: item.price,
       image_url: item.image_url,
-      count: value,
+      count: e || 1,
     })
-  }, [value])
+    setCartTotal(getTotalCart())
+  }
 
   return (
     <div className="flex gap-4 h-24">
@@ -170,7 +185,7 @@ function CartItem({ item, deleteHandler }) {
       <div className="my-auto w-16">
         <NumberInput
           value={value}
-          onChange={setValue}
+          onChange={(e) => handleOnChange(e)}
           min={1}
           max={100}
           hideControls

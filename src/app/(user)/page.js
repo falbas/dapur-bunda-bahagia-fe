@@ -1,10 +1,10 @@
 'use client'
 
 import useSWR from 'swr'
-import { fetcherSWR, fetcher } from '@/helpers/fetcher'
+import { fetcherSWR } from '@/helpers/fetcher'
 import { currencyFormat } from '@/helpers/utils'
 import { Button, Select } from '@mantine/core'
-import { addToCart } from '@/helpers/cartManager'
+import { addToCart, checkCartItem } from '@/helpers/cartManager'
 import { useState, useEffect } from 'react'
 
 export default function Page() {
@@ -74,9 +74,13 @@ export default function Page() {
                   color="teal"
                   radius="xl"
                   fullWidth
-                  disabled={!item.status}
+                  disabled={!item.status || checkCartItem(item.id)}
                 >
-                  {item.status ? 'Tambah' : 'Tidak Tersedia'}
+                  {item.status
+                    ? checkCartItem(item.id)
+                      ? 'Di Keranjang'
+                      : 'Tambah'
+                    : 'Tidak Tersedia'}
                 </Button>
               </div>
             ))}
